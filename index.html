@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>JSMiner</title>
+    <link rel="StyleSheet" type="text/css" href="src/style.css"/>
+    <script type="text/javascript" src="lib/mootools.js"></script>
+    <script type="text/javascript" src="src/jsminer.js"></script>
+    <script type="text/javascript">
+      window.onload = function() {
+        var game = new JSMiner('game');
+      }
+    </script>
+  </head>
+  <body>
+    <div id="game">
+      <div id="status">
+        <div id="time">Time <span id="timer"></span></div>
+        <div id="smile"></div>
+        <div id="flag">Flag <span id="score"></span></div>
+      </div>
+      <div id="field"></div>
+    </div>
+  </body>
+</html>
