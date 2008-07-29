@@ -64,5 +64,13 @@ var JSMinerTest = TestCase.create({
     
     this.assertEqual(12, game.rows);
     this.assertEqual(22, game.cols);
+  },
+  
+  testStateAttributes: function() {
+    var game = new JSMiner(new Element('div'));
+    
+    this.assertEqual(Math.floor(game.rows * game.cols / game.minesConcentration), game.mines);
+    this.assertEqual(0, game.found);
+    this.assertEqual(0, game.seconds);
   }
 });

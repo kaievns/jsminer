@@ -20,6 +20,14 @@ var JSMiner = new Class({
   DEFAULT_ROWS: 8,
   DEFAULT_COLS: 8,
   
+  // the mines concentration
+  minesConcentration: 6,
+  
+  // the state attributes
+  mines: null,
+  found: null,
+  seconds: null,
+  
   /**
    * constructor
    *
@@ -60,5 +68,33 @@ var JSMiner = new Class({
   setSize: function(rows, cols) {
     this.rows = typeof(rows) == 'number' ? rows : this.rows || this.DEFAULT_ROWS;
     this.cols = typeof(cols) == 'number' ? cols : this.cols || this.DEFAULT_COLS;
+    
+    this.rebuild();
+    
+    return this;
+  },
+  
+  /**
+   * resets the state attributes
+   *
+   * @return JSMiner self instance
+   */
+  reset: function() {
+    this.mines = Math.floor(this.rows * this.cols / this.minesConcentration);
+    this.found = 0;
+    this.seconds = 0;
+    
+    return this;
+  },
+  
+  /**
+   * rebuilds the game UI
+   *
+   * @return JSMiner self instance
+   */
+  rebuild: function() {
+    this.reset();
+    
+    return this;
   }
 });
