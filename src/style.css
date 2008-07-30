@@ -1,0 +1,33 @@
+*.jsminer-field {
+  
+}
+
+*.jsminer-field div.row {
+  height: 26px;
+  line-height: 26px;
+  margin-bottom: 1px;
+}
+*.jsminer-field div.row div.cell {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  float: left;
+  border: 1px solid gray;
+  background: #EEE;
+  margin-right: 1px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: Helvetica;
+  color: gray;
+  cursor: default;
+}
+*.jsminer-field div.row div.cell.near-mines-0 { }
+*.jsminer-field div.row div.cell.near-mines-1 { color: blue; }
+*.jsminer-field div.row div.cell.near-mines-2 { color: green; }
+*.jsminer-field div.row div.cell.near-mines-3 { color: red; }
+*.jsminer-field div.row div.cell.near-mines-4 { color: violet; }
+*.jsminer-field div.row div.cell.near-mines-5 { color: brown; }
+*.jsminer-field div.row div.cell.near-mines-6 { color: ; }
+*.jsminer-field div.row div.cell.near-mines-7 { color: ; }
+*.jsminer-field div.row div.cell.near-mines-8 { color: ; }
