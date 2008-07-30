@@ -16,6 +16,9 @@ var JSMiner = new Class({
   // the game-logic object 
   game: null,
   
+  // the user-interface builder object
+  ui: null,
+  
   /**
    * constructor
    *
@@ -44,6 +47,7 @@ var JSMiner = new Class({
     }, this);
     
     this.game = new JSMiner.Game();
+    this.ui = new JSMiner.UI();
     
     this.setSize(options['rows'], options['cols']);
   },
@@ -81,6 +85,7 @@ var JSMiner = new Class({
    * @return JSMiner self instance
    */
   rebuild: function() {
+    this.ui.build(this);
     
     return this;
   }
