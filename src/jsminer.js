@@ -13,20 +13,8 @@ var JSMiner = new Class({
   score: null,
   smile: null,
   
-  // field size attributes
-  rows: null,
-  cols: null,
-  
-  DEFAULT_ROWS: 8,
-  DEFAULT_COLS: 8,
-  
-  // the mines concentration
-  minesConcentration: 6,
-  
-  // the state attributes
-  mines: null,
-  found: null,
-  seconds: null,
+  // the game-logic object 
+  game: null,
   
   /**
    * constructor
@@ -55,6 +43,8 @@ var JSMiner = new Class({
       }
     }, this);
     
+    this.game = new JSMiner.Game();
+    
     this.setSize(options['rows'], options['cols']);
   },
   
@@ -66,8 +56,7 @@ var JSMiner = new Class({
    * @return JSMiner self instance
    */
   setSize: function(rows, cols) {
-    this.rows = typeof(rows) == 'number' ? rows : this.rows || this.DEFAULT_ROWS;
-    this.cols = typeof(cols) == 'number' ? cols : this.cols || this.DEFAULT_COLS;
+    this.game.setSize(rows, cols)
     
     this.rebuild();
     
@@ -80,9 +69,8 @@ var JSMiner = new Class({
    * @return JSMiner self instance
    */
   reset: function() {
-    this.mines = Math.floor(this.rows * this.cols / this.minesConcentration);
-    this.found = 0;
-    this.seconds = 0;
+    this.game.reset();
+    this.rebuild();
     
     return this;
   },
@@ -93,7 +81,6 @@ var JSMiner = new Class({
    * @return JSMiner self instance
    */
   rebuild: function() {
-    this.reset();
     
     return this;
   }

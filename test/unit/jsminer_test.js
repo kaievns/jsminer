@@ -53,24 +53,16 @@ var JSMinerTest = TestCase.create({
   },
   
   testSize: function() {
-    var game = new JSMiner(new Element('div'));
+    var miner = new JSMiner(new Element('div'));
     
-    this.assertEqual(game.DEFAULT_ROWS, game.rows);
-    this.assertEqual(game.DEFAULT_COLS, game.cols);
+    this.assertEqual(JSMiner.DEFAULT_ROWS, miner.game.rows);
+    this.assertEqual(JSMiner.DEFAULT_COLS, miner.game.cols);
     
-    var game = new JSMiner(new Element('div'), {
+    var miner = new JSMiner(new Element('div'), {
       rows: 12, cols: 22
     });
     
-    this.assertEqual(12, game.rows);
-    this.assertEqual(22, game.cols);
-  },
-  
-  testStateAttributes: function() {
-    var game = new JSMiner(new Element('div'));
-    
-    this.assertEqual(Math.floor(game.rows * game.cols / game.minesConcentration), game.mines);
-    this.assertEqual(0, game.found);
-    this.assertEqual(0, game.seconds);
+    this.assertEqual(12, miner.game.rows);
+    this.assertEqual(22, miner.game.cols);
   }
 });

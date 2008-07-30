@@ -7,12 +7,21 @@
     <script type="text/javascript" src="../lib/mootools.js"></script>
     
     <script type="text/javascript" src="../src/jsminer.js"></script>
+    <script type="text/javascript" src="../src/jsminer/game.js"></script>
+    <script type="text/javascript" src="../src/jsminer/cell.js"></script>
+    <script type="text/javascript" src="../src/jsminer/ui.js"></script>
     
     <script type="text/javascript" src="unit/jsminer_test.js"></script>
+    <script type="text/javascript" src="unit/jsminer/game_test.js"></script>
+    <script type="text/javascript" src="unit/jsminer/cell_test.js"></script>
+    <script type="text/javascript" src="unit/jsminer/ui_test.js"></script>
     
     <script type="text/javascript">
       new TestSuite(
-        JSMinerTest
+        JSMinerTest,
+        JSMiner.GameTest,
+        JSMiner.CellTest,
+        JSMiner.UITest
       ).runOnLoad();
     </script>
   </head>
