@@ -47,7 +47,7 @@ var JSMiner = new Class({
     }, this);
     
     this.game = new JSMiner.Game();
-    this.ui = new JSMiner.UI();
+    this.ui = new JSMiner.UI(this);
     
     this.setSize(options['rows'], options['cols']);
   },
@@ -85,8 +85,27 @@ var JSMiner = new Class({
    * @return JSMiner self instance
    */
   rebuild: function() {
-    this.ui.build(this);
+    this.ui.build();
     
     return this;
+  },
+  
+  /**
+   * covers the game-map access
+   *
+   * @return Array the game map
+   */
+  getMinesMap: function() {
+    return this.game.map;
+  },
+  
+  hitCell: function(cell) {
+    this.game.hitCell(cell);
+    this.ui.update();
+  },
+  
+  markCell: function(cell) {
+    this.game.markCell(cell);
+    this.ui.update();
   }
 });

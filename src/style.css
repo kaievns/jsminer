@@ -45,6 +45,9 @@
 *.jsminer-field div.row div.cell.mined {
   background-image: url('../img/32/mine.png');
 }
+*.jsminer-field div.row div.cell.boomed {
+  background-image: url('../img/32/boom.png');
+}
 
 *.jsminer-field div.row div.cell.marked {
   background-image: url('../img/32/flag.png');

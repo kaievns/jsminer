@@ -5,23 +5,25 @@
  */
 JSMiner.Cell = new Class({
   mined: null,
+  boomed: null,
   marked: null,
+  markedWrong: null,
   nearMinesNum: null,
   
-  game: null,
   top: null,
   left: null,
+  
+  explored: null,
+  autoexplorable: null,
   
   /**
    * constructor
    *
-   * @param JSMiner.Game game logic
    * @param Integer top position
    * @param Integer left position
    * @return void
    */
-  initialize: function(game, top, left) {
-    this.game = game;
+  initialize: function(top, left) {
     this.top = top;
     this.left = left;
     
@@ -35,16 +37,11 @@ JSMiner.Cell = new Class({
    */
   reset: function() {
     this.mined = false;
+    this.boomed = false;
     this.marked = false;
+    this.markedWrong = false;
     this.nearMinesNum = 0;
-  },
-  
-  /**
-   * puts a user's 'mined' mark on the cell
-   *
-   * @return void
-   */
-  mark: function() {
-    this.marked = ! this.marked;
+    
+    this.explored = false;
   }
 });

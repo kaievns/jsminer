@@ -18,7 +18,6 @@ JSMiner.GameTest = TestCase.create({
       game.mines
     );
     
-    this.assertEqual(0, game.found);
     this.assertEqual(0, game.timer);
     
     this.assertInstanceOf(Array, game.map);
@@ -75,5 +74,119 @@ JSMiner.GameTest = TestCase.create({
     
     this.assertEqual(game.mines, mines_count);
     this.assert(near_mines_count >= game.mines);
+  },
+  
+  testInitialHit: function() {
+    var game = new JSMiner.Game();
+    game.hitCell(game.map[0][0]);
+    
+    this.assert(game.filledUp);
+    
+    this.assert(game.map[0][0].explored);
+    this.assertEqual(0, game.map[0][0].nearMinesNum);
+  },
+  
+  // some helper
+  smallUnexploredGame: function() {
+    var game = new JSMiner.Game();
+    game.setSize(4,4);
+    game.fillMap();
+    
+    // manuall cells prepare
+    game.flatCells().each(function(cell) {
+      cell.nearMinesNum = 1;
+      cell.explored = false;
+      cell.mined = false;
+    });
+    
+    return game;
+  },
+  
+  testCellsMarking: function() {
+    var game = this.smallUnexploredGame();
+    
+    var cell = game.map[0][0];
+    
+    this.assertFalse(cell.explored);
+    this.assertFalse(cell.marked);
+    
+    game.markCell(cell);
+    this.assert(cell.marked);
+    this.assertFalse(cell.explored);
+    
+    game.hitCell(cell);
+    this.assert(cell.marked);
+    this.assertFalse(cell.explored);
+    
+    game.markCell(cell);
+    this.assertFalse(cell.explored);
+    this.assertFalse(cell.marked);
+    
+    game.hitCell(cell);
+    this.assert(cell.explored);
+    this.assertFalse(cell.marked);
+  },
+  
+  testCellsExploration: function() {
+    var game = this.smallUnexploredGame();
+    
+    var cell = game.map[0][0]; // a cell with some near mines
+    
+    game.hitCell(cell);
+    this.assert(cell.explored);
+    
+    game.areaCells(cell).each(function(a_cell) {
+      if (a_cell != cell) {
+        this.assertFalse(a_cell.explored, "Check if the cell "+a_cell.top+":"+a_cell.left+" is not explored");
+      }
+    }, this);
+    
+    var cell = game.map[1][1];
+    var area_cells = game.areaCells(cell);
+    cell.nearMinesNum = 0;  // making an empty cell
+    game.hitCell(cell);
+    
+    // checking that the nearby cells have been explored
+    area_cells.each(function(cell) {
+      this.assert(cell.explored, "Check if the cell "+cell.top+":"+cell.left+" has been explored");
+    }, this);
+    
+    // checking that the cells out of the area still unexplored
+    game.flatCells().each(function(cell) {
+      if (!area_cells.contains(cell)) {
+        this.assertFalse(cell.explored, "Check if the cell "+cell.top+":"+cell.left+" is not explored");
+      }
+    }, this);
+  },
+  
+  testMinedCellsExploration: function() {
+    var game = this.smallUnexploredGame();
+    var cell = game.map[0][0];
+    cell.mined = true;
+    
+    game.hitCell(cell);
+    this.assert(game.over);
+    
+    game.flatCells().each(function(cell) {
+      this.assert(cell.explored, "check if the cell "+cell.top+":"+cell.left+" autoexplored on game-over");
+    }, this);
+  },
+  
+  testSuccessfullGameFinish: function() {
+    var game = this.smallUnexploredGame();
+    
+    game.flatCells().each(function(cell) {
+      game.hitCell(cell);
+    });
+    
+    // keep one cell unexplored
+    game.map[0][0].reset();
+    game.over = false;
+    game.won = false;
+    
+    game.hitCell(game.map[0][0]);
+
+    this.assert(game.over);
+    this.assert(game.won);    
   }
 });

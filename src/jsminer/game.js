@@ -19,7 +19,6 @@ JSMiner.Game = new Class({
   
   // the game state attributes 
   mines: null,
-  found: null,
   timer: null,
   
   // the field map
@@ -27,6 +26,11 @@ JSMiner.Game = new Class({
   
   // a flag if the game is paused
   paused: null,
+  
+  filledUp: null,
+  
+  over: null,
+  won: null,
   
   initialize: function() {
     this.minesConcentration = JSMiner.DEFAULT_MINES_CONCENTRATION;
@@ -55,8 +59,10 @@ JSMiner.Game = new Class({
    */
   reset: function() {
     this.mines = Math.floor(this.rows * this.cols / this.minesConcentration);
-    this.found = 0;
     this.timer = 0;
+    this.filledUp = false;
+    this.over = false;
+    this.won = false;
     
     if (this.map) {
       this.resetMap();
@@ -94,10 +100,50 @@ JSMiner.Game = new Class({
    * @return void
    */
   hitCell: function(cell) {
+    if (this.over) { return false; }
+    
+    if (!this.filledUp) {
+      this.fillMap(cell.top, cell.left);
+    }
+    
+    if (!cell.marked) {
+      if (cell.explored) {
+        this.trySiblingsAutoExplore(cell);
+      } else {
+        cell.explored = true;
+        
+        if (cell.mined) {
+          cell.boomed = true;
+          return this.gameOver();
+        } else if (cell.nearMinesNum == 0) {
+          this.trySiblingsAutoExplore(cell);
+        }
+        
+        this.checkForWin();
+      }
+    }
   },
   
+  /**
+   * handles the cell marking/unmarking as mined
+   *
+   * @param JSMiner.Cell cell
+   * @return void
+   */
   markCell: function(cell) {
-    cell.mark();
+    if (this.over) { return false; }
+    
+    cell.marked = cell.explored ? false : !cell.marked;
+    this.checkForWin();
+  },
+  
+  /**
+   * returns a flat list of all the map cells
+   *
+   * @return Array flat list
+   */
+  flatCells: function() {
+    return this.map.flatten();
   },
 
 // protected
@@ -121,6 +167,10 @@ JSMiner.Game = new Class({
    * @return Array
    */
   areaCells: function(top, left) {
+    if (top instanceof JSMiner.Cell) {
+      var left = top.left;
+      var top = top.top;
+    }
     var cells = [];
     
     var start_x = top > 0 ? top-1 : 0;
@@ -160,7 +210,7 @@ JSMiner.Game = new Class({
     for (var i=0; i < this.rows; i++) {
       this.map[i] = [];
       for (var j=0; j < this.cols; j++) {
-        this.map[i][j] = new JSMiner.Cell(this, i, j);
+        this.map[i][j] = new JSMiner.Cell(i, j);
       }
     }
     this.filledUp = false;
@@ -189,18 +239,97 @@ JSMiner.Game = new Class({
       }
     }
     
-    // minning
+    this.mineMap(aviable_cells);
+    this.calculateNearMinesNums();
+    
+    this.filledUp = true;
+  },
+  
+  /**
+   * checks if the given cell's sibling cells can be harmless autoexplored
+   * and if so call 'hit' on 'em
+   *
+   * @param JSMiner.Cell
+   * @return void
+   */
+  trySiblingsAutoExplore: function(cell) {
+    var siblings = this.areaCells(cell).erase(cell);
+    
+    // checking if autoexplration is possible
+    var autoexplorable = true;
+    siblings.each(function(cell) {
+      if ((cell.mined && !cell.marked) || (cell.marked && !cell.mined)) {
+        autoexplorable = false;
+      }
+    });
+    
+    if (autoexplorable) {
+      siblings.each(function(cell) {
+        if (!(cell.explored || cell.mined || cell.marked)) {
+          this.hitCell(cell);
+        }
+      }, this);
+    }
+  },
+  
+  /**
+   * checks if the game has been won
+   *
+   * @return void
+   */ 
+  checkForWin: function() {
+    var finished = true;
+    
+    this.flatCells().each(function(cell) {
+      if (!(cell.explored || cell.marked) || (cell.marked && !cell.mined)) {
+        finished = false;
+      }
+    }, this);
+    
+    if (finished) {
+      this.over = true;
+      this.won = true;
+    }
+  },
+  
+  gameOver: function() {
+    this.over = true;
+    this.won = false;
+    
+    // exploring all the cells and mark wrong marked 
+    this.flatCells().each(function(cell) {
+       cell.explored = true;
+       if (cell.marked && !cell.mined) {
+         cell.markedWrong = true;
+       }
+    });
+  },
+  
+// private
+  /**
+   * puts the mines on the map
+   *
+   * @param Array the list of aviable positions
+   * @return void
+   */
+  mineMap: function(aviable_cells) {
     for (var i=0; i < this.mines; i++) {
       var pos = aviable_cells.getRandom();
       
-      if (pos) { // for cases when there are no more 
+      if (pos) { // for cases when there are no more places for mines 
         this.map[pos[0]][pos[1]].mined = true;
         
         aviable_cells.erase(pos);
       }
     }
-    
-    // calculating the nearby mines count for the cells
+  },
+  
+  /**
+   * calculates the near-mines count markers of the cells
+   *
+   * @return void
+   */
+  calculateNearMinesNums: function() {
     for (var i=0; i < this.rows; i++) {
       for (var j=0; j < this.cols; j++) {
         if (!this.map[i][j].mined) {
@@ -215,7 +344,5 @@ JSMiner.Game = new Class({
         }
       }
     }
-    
-    this.filledUp = true;
   }
 });
