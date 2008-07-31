@@ -86,6 +86,13 @@ JSMiner.UI = new Class({
     }
     
     element.addClass('jsminer-field');
+    
+    if (row.offsetHeight) {
+      var row_width = (row.getFirst('div.cell').offsetWidth * map[0].length) + 'px';
+      element.getChildren('div.row').each(function(row) {
+        row.style.width = row_width;
+      });
+    }
   },
   
   /**

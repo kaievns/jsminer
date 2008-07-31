@@ -143,7 +143,8 @@ JSMiner.Game = new Class({
    * @return Array flat list
    */
   flatCells: function() {
-    return this.map.flatten();
+    this.flattenCells = this.flattenCells || this.map.flatten();
+    return this.flattenCells;
   },
 
 // protected
@@ -214,6 +215,7 @@ JSMiner.Game = new Class({
       }
     }
     this.filledUp = false;
+    this.flattenCells = null;
   },
   
   /**
@@ -257,18 +259,21 @@ JSMiner.Game = new Class({
     
     // checking if autoexplration is possible
     var autoexplorable = true;
-    siblings.each(function(cell) {
+    for (var i=0; i < siblings.length; i++) {
+      var cell = siblings[i];
       if ((cell.mined && !cell.marked) || (cell.marked && !cell.mined)) {
         autoexplorable = false;
+        break;
       }
-    });
+    }
     
     if (autoexplorable) {
-      siblings.each(function(cell) {
+      for (var i=0; i < siblings.length; i++) {
+        var cell = siblings[i];
         if (!(cell.explored || cell.mined || cell.marked)) {
           this.hitCell(cell);
         }
-      }, this);
+      }
     }
   },
   
@@ -278,13 +283,15 @@ JSMiner.Game = new Class({
    * @return void
    */ 
   checkForWin: function() {
-    var finished = true;
+    var finished = true, cells = this.flatCells();
     
-    this.flatCells().each(function(cell) {
+    for (var i=0; i < cells.length; i++) {
+      var cell = cells[i];
       if (!(cell.explored || cell.marked) || (cell.marked && !cell.mined)) {
         finished = false;
+        break;
       }
-    }, this);
+    }
     
     if (finished) {
       this.over = true;
@@ -292,6 +299,11 @@ JSMiner.Game = new Class({
     }
   },
   
+  /**
+   * makes the game over
+   *
+   * @return void
+   */
   gameOver: function() {
     this.over = true;
     this.won = false;
