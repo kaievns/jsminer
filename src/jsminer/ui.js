@@ -29,20 +29,29 @@ JSMiner.UI = new Class({
     for (var i=0; i < map.length; i++) {
       var row = new Element('div', { 'class': 'row' });
       for (var j=0; j < map[i].length; j++) {
-        var cell = map[i][j];
-        
-        if (cell.mined) {
-          cell.element.innerHTML = 'M';
-        } else {
-          cell.element.innerHTML = cell.nearMinesNum == 0 ? ' ' : cell.nearMinesNum;
-          cell.element.addClass('near-mines-'+cell.nearMinesNum);
-        }
-        
-        row.appendChild(cell.element);
+        row.appendChild(this.buildCell(map[i][j]));
       }
       element.appendChild(row);
     }
     
     element.addClass('jsminer-field');
+  },
+  
+  
+  buildCell: function(cell) {
+    cell.element = new Element('div', {
+      'class': 'cell'
+    });
+    
+    if (cell.mined) {
+      cell.element.innerHTML = ' ';
+      cell.element.addClass('mined');
+    } else {
+      var mines_num = cell.nearMinesNum;
+      cell.element.innerHTML = mines_num == 0 ? ' ' : mines_num;
+      cell.element.addClass('near-mines-'+mines_num);
+    }
+        
+    return cell.element;
   }
 });

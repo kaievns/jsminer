@@ -4,8 +4,6 @@
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov-gmail-com>
  */
 JSMiner.Cell = new Class({
-  element: null,
-  
   mined: null,
   marked: null,
   nearMinesNum: null,
@@ -27,10 +25,6 @@ JSMiner.Cell = new Class({
     this.top = top;
     this.left = left;
     
-    this.element = new Element('div', {
-      'events': { click: this.onclick.bindWithEvent(this) }
-    });
-    
     this.reset();
   },
   
@@ -43,16 +37,6 @@ JSMiner.Cell = new Class({
     this.mined = false;
     this.marked = false;
     this.nearMinesNum = 0;
-    this.element.className = 'cell';
-  },
-  
-  /**
-   * handles the onclick envent on the cell
-   *
-   * @param Event event
-   * @return void
-   */
-  onclick: function(event) {
   },
   
   /**
@@ -61,7 +45,6 @@ JSMiner.Cell = new Class({
    * @return void
    */
   mark: function() {
-    this.element.toggleClass('marked');
     this.marked = ! this.marked;
   }
 });

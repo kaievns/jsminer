@@ -95,6 +95,10 @@ JSMiner.Game = new Class({
    */
   hitCell: function(cell) {
   },
+  
+  markCell: function(cell) {
+    cell.mark();
+  },
 
 // protected
 

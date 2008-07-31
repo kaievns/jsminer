@@ -3,31 +3,53 @@
 }
 
 *.jsminer-field div.row {
-  height: 26px;
-  line-height: 26px;
-  margin-bottom: 1px;
+  height: 32px;
+  line-height: 32px;
 }
 *.jsminer-field div.row div.cell {
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
   float: left;
-  border: 1px solid gray;
-  background: #EEE;
-  margin-right: 1px;
+  background-color: #F8F8F8;
   text-align: center;
+  font-size: 24px;
   font-weight: bold;
-  font-size: 16px;
-  font-family: Helvetica;
-  color: gray;
+  font-family: Verdana;
+  color: #808080;
   cursor: default;
+  background-image: url('../img/32/bg_front.png');
 }
+*.jsminer-field div.row div.cell.near-mines-0,
+*.jsminer-field div.row div.cell.near-mines-1,
+*.jsminer-field div.row div.cell.near-mines-2,
+*.jsminer-field div.row div.cell.near-mines-3,
+*.jsminer-field div.row div.cell.near-mines-4,
+*.jsminer-field div.row div.cell.near-mines-5,
+*.jsminer-field div.row div.cell.near-mines-6,
+*.jsminer-field div.row div.cell.near-mines-7,
+*.jsminer-field div.row div.cell.near-mines-8 {
+  background-image: url('../img/32/bg_back.png');
+}
+
 *.jsminer-field div.row div.cell.near-mines-0 { }
-*.jsminer-field div.row div.cell.near-mines-1 { color: blue; }
-*.jsminer-field div.row div.cell.near-mines-2 { color: green; }
-*.jsminer-field div.row div.cell.near-mines-3 { color: red; }
-*.jsminer-field div.row div.cell.near-mines-4 { color: violet; }
-*.jsminer-field div.row div.cell.near-mines-5 { color: brown; }
-*.jsminer-field div.row div.cell.near-mines-6 { color: ; }
-*.jsminer-field div.row div.cell.near-mines-7 { color: ; }
-*.jsminer-field div.row div.cell.near-mines-8 { color: ; }
+*.jsminer-field div.row div.cell.near-mines-1 { color: #0000FF; }
+*.jsminer-field div.row div.cell.near-mines-2 { color: #00A000; }
+*.jsminer-field div.row div.cell.near-mines-3 { color: #FF0000; }
+*.jsminer-field div.row div.cell.near-mines-4 { color: #00007f; }
+*.jsminer-field div.row div.cell.near-mines-5 { color: #AA0000; }
+*.jsminer-field div.row div.cell.near-mines-6 { color: #840; }
+*.jsminer-field div.row div.cell.near-mines-7 { color: #480; }
+*.jsminer-field div.row div.cell.near-mines-8 { color: #048; }
+
+*.jsminer-field div.row div.cell.mined {
+  background-image: url('../img/32/mine.png');
+}
+
+*.jsminer-field div.row div.cell.marked {
+  background-image: url('../img/32/flag.png');
+}
+
+*.jsminer-field div.row div.cell.marked-wrong {
+  background-image: url('../img/32/flag_wrong.png');
+}
