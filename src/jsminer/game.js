@@ -60,6 +60,7 @@ JSMiner.Game = new Class({
   reset: function() {
     this.mines = Math.floor(this.rows * this.cols / this.minesConcentration);
     this.timer = 0;
+    this.paused = null;
     this.filledUp = false;
     this.over = false;
     this.won = false;
@@ -69,6 +70,10 @@ JSMiner.Game = new Class({
     } else {
       this.buildMap();
     }
+    
+    if (this.updateTimerInterval) {
+      window.clearInterval(this.updateTimerInterval);
+    }
   },
   
   /**
@@ -77,10 +82,12 @@ JSMiner.Game = new Class({
    * @return void
    */
   run: function(top, left) {
-    var top = top || Math.rand(this.rows);
-    var left = left || Math.rand(this.cols);
+    var top = arguments.length < 2 ? $random(0, this.rows) : top;
+    var left = arguments.length < 2 ? $random(0, this.cols) : left;
     
-    this.updateTimer.periodical(1000, this);
+    this.fillMap(top, left);
+    
+    this.updateTimerInterval = this.updateTimer.periodical(1000, this);
     this.paused = false;
   },
   
@@ -90,7 +97,7 @@ JSMiner.Game = new Class({
    * @return void
    */
   pause: function() {
-    this.paused = true;
+    this.paused = !this.paused;
   },
   
   /**
@@ -103,7 +110,7 @@ JSMiner.Game = new Class({
     if (this.over) { return false; }
     
     if (!this.filledUp) {
-      this.fillMap(cell.top, cell.left);
+      this.run(cell.top, cell.left);
     }
     
     if (!cell.marked) {
@@ -155,10 +162,14 @@ JSMiner.Game = new Class({
    * @return void
    */
   updateTimer: function() {
-    if (!this.paused) {
+    if (!this.paused && !this.over) {
       this.timer ++;
+      this.updateTimerCallback(this.timer);
     }
   },
+  
+  // will be wrapped by controller/view
+  updateTimerCallback: function(time) {},
   
   /**
    * returns the list of cells around and include the coordinates

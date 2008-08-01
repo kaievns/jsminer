@@ -28,6 +28,9 @@ JSMiner.UI = new Class({
     if (this.controller.score) {
       this.updateScore(0);
     }
+    if (this.controller.timer) {
+      this.controller.game.updateTimerCallback = this.updateTimer.bind(this);
+    }
   },
   
   /**
@@ -42,6 +45,21 @@ JSMiner.UI = new Class({
         this.updateScore(markers_num);
       }
     }
+  },
+  
+  /**
+   * updates the game timer
+   *
+   * @return void
+   */
+  updateTimer: function(time) {
+    var hours = Math.floor(time/3600);
+    var minutes = Math.floor(time/60%60);
+    var seconds = time % 60;
+    this.controller.timer.innerHTML = '' +
+      (hours < 10 ? '0':'')   + hours + ':' +
+      (minutes < 10 ? '0':'') + minutes  + ':' +
+      (seconds < 10 ? '0':'') + seconds ;
   },
   
   /**

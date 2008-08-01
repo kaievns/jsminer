@@ -39,7 +39,7 @@ var JSMiner = new Class({
       if (options[name]) {
         this[name] = $(options[name]);
       } else {
-        var child = this.element.getElementById(name);
+        var child =  this.element.getElementById(name) || this.element.getFirst("#"+name);
         if (child) {
           this[name] = child;
         }
@@ -87,6 +87,25 @@ var JSMiner = new Class({
     this.ui.build();
     
     return this;
+  },
+  
+  /**
+   * pauses the game
+   *
+   * @return
+   */
+  pause: function() {
+    this.game.pause();
+    this.ui.update();
+  },
+  
+  /**
+   * returns the check result if the game is paused
+   *
+   * @return boolean check result
+   */
+  paused: function() {
+    this.game.paused;
   },
   
   /**
