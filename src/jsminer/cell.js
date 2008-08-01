@@ -14,7 +14,6 @@ JSMiner.Cell = new Class({
   left: null,
   
   explored: null,
-  autoexplorable: null,
   
   /**
    * constructor
