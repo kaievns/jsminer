@@ -14,13 +14,33 @@
         var game = new JSMiner('game');
       }
     </script>
+    <style type="text/css">
+      /* local styles */
+      div#status {
+        display: table-cell;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        padding-bottom: 10pt;
+      }
+      div#status div#time {
+        float: left;
+      }
+      div#status div#smile {
+        float: left;
+        margin: 0 10pt;
+      }
+      div#status div#flags {
+        float: right;
+      }
+    </style>
   </head>
   <body>
     <div id="game">
       <div id="status">
         <div id="time">Time <span id="timer">00:00:00</span></div>
         <div id="smile"></div>
-        <div id="flag">Mines <span id="score">0/0</span></div>
+        <div id="flags">Mines <span id="score">0/0</span></div>
       </div>
       <div id="field"></div>
     </div>
