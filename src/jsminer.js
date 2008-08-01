@@ -105,7 +105,34 @@ var JSMiner = new Class({
    * @return boolean check result
    */
   paused: function() {
-    this.game.paused;
+    return this.game.paused;
+  },
+  
+  /**
+   * checks if the game is active
+   *
+   * @return boolean check result
+   */
+  active: function() {
+    return !this.game.paused && !this.game.over && this.game.filledUp;
+  },
+  
+  /**
+   * checks if the game is over with the bad result
+   *
+   * @return boolean check result
+   */
+  failed: function() {
+    return this.game.over && !this.game.won;
+  },
+  
+  /**
+   * checks if the game over and the user won this one
+   *
+   * @return boolean check result
+   */
+  won: function() {
+    return this.game.won;
   },
   
   /**

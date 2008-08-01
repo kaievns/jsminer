@@ -56,3 +56,25 @@
 *.jsminer-field div.row div.cell.marked-wrong {
   background-image: url('../img/32/flag_wrong.png');
 }
+
+/* the status smile styles */
+*.jsminer-smile {
+  display: block;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url('../img/face-sleepy.png');
+}
+*.jsminer-smile.active {
+  background-image: url('../img/face-active.png');
+}
+*.jsminer-smile.paused {
+}
+*.jsminer-smile.failed {
+  background-image: url('../img/face-crying.png');
+}
+*.jsminer-smile.won {
+  background-image: url('../img/face-smiley.png');
+}

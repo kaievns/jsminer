@@ -30,6 +30,11 @@ JSMiner.UI = new Class({
     }
     if (this.controller.timer) {
       this.controller.game.updateTimerCallback = this.updateTimer.bind(this);
+      this.updateTimer(0);
+    }
+    if (this.controller.smile) {
+      this.controller.smile.onclick = this.controller.reset.bind(this.controller);
+      this.updateSmile();
     }
   },
   
@@ -45,6 +50,31 @@ JSMiner.UI = new Class({
         this.updateScore(markers_num);
       }
     }
+    if (this.controller.timer) {
+      this.updateTimer(this.controller.game.timer);
+    }
+    if (this.controller.smile) {
+      this.updateSmile();
+    }
+  },
+  
+  /**
+   * updates the smile icon class
+   *
+   * @return void
+   */
+  updateSmile: function() {
+    var class_name = '';
+    if (this.controller.active()) {
+      class_name = 'active';
+    } else if (this.controller.paused()) {
+      class_name = 'paused';
+    } else if (this.controller.failed()) {
+      class_name = 'failed';
+    } else if (this.controller.won()) {
+      class_name = 'won';
+    }
+    this.controller.smile.className = 'jsminer-smile '+class_name;
   },
   
   /**
@@ -100,21 +130,24 @@ JSMiner.UI = new Class({
    * @return void
    */
   updateCell: function(cell) {
+    var class_name = '';
+    cell.element.innerHTML = '';
     if (cell.explored) {
       if (cell.boomed) {
-        var class_name = 'boomed';
+        class_name = 'boomed';
       } else if (cell.mined) {
-        var class_name = 'mined';
+        class_name = 'mined';
       } else if (cell.markedWrong) {
-        var class_name = 'marked-wrong';
+        class_name = 'marked-wrong';
       } else {
-        var class_name = 'near-mines-'+cell.nearMinesNum;
+        class_name = 'near-mines-'+cell.nearMinesNum;
         cell.element.innerHTML = cell.nearMinesNum == 0 ? ' ' : cell.nearMinesNum;
       }
       cell.element.addClass(class_name);
-    } else {
-      cell.element[cell.marked ? 'addClass' : 'removeClass']('marked');
+    } else if (cell.marked) {
+      class_name = 'marked';
     }
+    cell.element.className = 'cell '+class_name;
   },
   
   /**
