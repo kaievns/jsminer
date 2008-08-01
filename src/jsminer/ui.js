@@ -25,6 +25,9 @@ JSMiner.UI = new Class({
     if (this.controller.field) {
       this.buildField(this.controller.field, this.controller.getMinesMap());
     }
+    if (this.controller.score) {
+      this.updateScore(0);
+    }
   },
   
   /**
@@ -34,22 +37,42 @@ JSMiner.UI = new Class({
    */
   update: function() {
     if (this.controller.field) {
-      this.updateField(this.controller.getMinesMap());
+      var markers_num = this.updateField(this.controller.getMinesMap());
+      if (this.controller.score) {
+        this.updateScore(markers_num);
+      }
     }
+  },
+  
+  /**
+   * updates the current score field
+   *
+   * @param Integer mined-markers number
+   * @return void
+   */
+  updateScore: function(markers_num) {
+    this.controller.score.innerHTML = ''+
+      markers_num + '/' +
+      this.controller.getMinesNum();
   },
   
   /**
    * handles the mines-field update
    *
    * @param Array field map
-   * @return void
+   * @return Integer the mined-markers number
    */
   updateField: function(map) {
+    var markers_num = 0;
     for (var i=0; i < map.length; i++) {
       for (var j=0; j < map[i].length; j++) {
         this.updateCell(map[i][j]);
+        if (map[i][j].marked) {
+          markers_num ++;
+        }
       }
     }
+    return markers_num;
   },
   
   /**

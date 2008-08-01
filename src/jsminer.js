@@ -39,7 +39,7 @@ var JSMiner = new Class({
       if (options[name]) {
         this[name] = $(options[name]);
       } else {
-        var child = this.element.getFirst('div#'+name);
+        var child = this.element.getElementById(name);
         if (child) {
           this[name] = child;
         }
@@ -61,7 +61,6 @@ var JSMiner = new Class({
    */
   setSize: function(rows, cols) {
     this.game.setSize(rows, cols)
-    
     this.rebuild();
     
     return this;
@@ -74,7 +73,7 @@ var JSMiner = new Class({
    */
   reset: function() {
     this.game.reset();
-    this.rebuild();
+    this.ui.update();
     
     return this;
   },
@@ -99,11 +98,32 @@ var JSMiner = new Class({
     return this.game.map;
   },
   
+  /**
+   * covers the game-mines num access
+   *
+   * @return Integer mines num
+   */
+  getMinesNum: function() {
+    return this.game.mines;
+  },
+  
+  /**
+   * handles the cell hit event
+   *
+   * @param JSMiner.Cell cell
+   * @return void
+   */
   hitCell: function(cell) {
     this.game.hitCell(cell);
     this.ui.update();
   },
   
+  /**
+   * handles the cell marking event
+   * 
+   * @param JSMiner.Cell cell
+   * @return void
+   */
   markCell: function(cell) {
     this.game.markCell(cell);
     this.ui.update();
