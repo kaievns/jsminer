@@ -38,6 +38,12 @@ JSMiner.UI = new Class({
     }
   },
   
+  /**
+   * handles the mines-field update
+   *
+   * @param Array field map
+   * @return void
+   */
   updateField: function(map) {
     for (var i=0; i < map.length; i++) {
       for (var j=0; j < map[i].length; j++) {
@@ -46,24 +52,27 @@ JSMiner.UI = new Class({
     }
   },
   
+  /**
+   * handles a single cell updating
+   *
+   * @param JSMiner.Cell cell
+   * @return void
+   */
   updateCell: function(cell) {
-    if (cell.marked) {
-      cell.element.addClass('marked');
-    } else {
-      cell.element.removeClass('marked');
-    }
-    
     if (cell.explored) {
       if (cell.boomed) {
-        cell.element.addClass('boomed');
+        var class_name = 'boomed';
       } else if (cell.mined) {
-        cell.element.addClass('mined');
+        var class_name = 'mined';
       } else if (cell.markedWrong) {
-        cell.element.addClass('marked-wrong');
+        var class_name = 'marked-wrong';
       } else {
+        var class_name = 'near-mines-'+cell.nearMinesNum;
         cell.element.innerHTML = cell.nearMinesNum == 0 ? ' ' : cell.nearMinesNum;
-        cell.element.addClass('near-mines-'+cell.nearMinesNum);
       }
+      cell.element.addClass(class_name);
+    } else {
+      cell.element[cell.marked ? 'addClass' : 'removeClass']('marked');
     }
   },
   
@@ -87,12 +96,11 @@ JSMiner.UI = new Class({
     
     element.addClass('jsminer-field');
     
-    if (row.offsetHeight) {
-      var row_width = (row.getFirst('div.cell').offsetWidth * map[0].length) + 'px';
-      element.getChildren('div.row').each(function(row) {
-        row.style.width = row_width;
-      });
-    }
+    // updating the rows width so the cells were not folding down 
+    var row_width = (row.getFirst('div.cell').offsetWidth * map[0].length) + 'px';
+    element.getChildren('div.row').each(function(row) {
+      row.style.width = row_width;
+    });
   },
   
   /**
