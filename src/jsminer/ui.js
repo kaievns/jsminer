@@ -136,7 +136,7 @@ JSMiner.UI = new Class({
       if (cell.boomed) {
         class_name = 'boomed';
       } else if (cell.mined) {
-        class_name = 'mined';
+        class_name = cell.marked ? 'marked' : 'mined';
       } else if (cell.markedWrong) {
         class_name = 'marked-wrong';
       } else {
