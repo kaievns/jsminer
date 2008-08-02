@@ -46,6 +46,7 @@ var JSMiner = new Class({
       }
     }, this);
     
+    this.options = new JSMiner.Options(this, options);
     this.game = new JSMiner.Game();
     this.ui = new JSMiner.UI(this);
     
@@ -64,6 +65,15 @@ var JSMiner = new Class({
     this.rebuild();
     
     return this;
+  },
+  
+  /**
+   * access to the game size 
+   *
+   * @return array [rows, cols]
+   */
+  getSize: function() {
+    return [this.game.rows, this.game.cols];
   },
   
   /**

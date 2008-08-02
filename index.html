@@ -6,12 +6,26 @@
     <link rel="StyleSheet" type="text/css" href="src/style.css"/>
     <script type="text/javascript" src="lib/mootools.js"></script>
     <script type="text/javascript" src="src/jsminer.js"></script>
+    <script type="text/javascript" src="src/jsminer/options.js"></script>
     <script type="text/javascript" src="src/jsminer/game.js"></script>
     <script type="text/javascript" src="src/jsminer/cell.js"></script>
     <script type="text/javascript" src="src/jsminer/ui.js"></script>
     <script type="text/javascript">
       window.onload = function() {
         var game = new JSMiner('game');
+        $('size').onchange = function() {
+          var allowed = true;
+          if (game.active()) {
+            var allowed = window.confirm('Resize will end up your current game\nProcess?');
+          }
+          if (allowed) {
+            var size = this.value.split('x');
+            game.setSize(parseInt(size[0]), parseInt(size[1]));
+          } else {
+            this.value = game.getSize()[0] +'x'+ game.getSize()[1];
+          }
+        };
+        $('size').value = game.getSize()[0] +'x'+ game.getSize()[1];
       }
     </script>
     <style type="text/css">
@@ -42,7 +56,37 @@
         <div id="smile"></div>
         <div id="flags">Mines <span id="score">0/0</span></div>
       </div>
+      
       <div id="field"></div>
+      
+      <div id="options">
+        <p>
+          <label>Size</label>
+          <select id="size">
+            <option value="8x8">Small</option>
+            <option value="8x16">Average</option>
+            <option value="16x16">Normal</option>
+            <option value="16x24">Big</option>
+            <option value="16x32">King Size</option>
+          </select>
+        </p>
+        <p>
+          <label>Severity</label>
+          <select id="cells_on_mine">
+            <option value="10">Easy</option>
+            <option value="6" selected="selected">Normal</option>
+            <option value="3">You're dead</option>
+          </select>
+        </p>
+        <p>
+          <label>Block Size</label>
+          <select id="block_size">
+            <option value="default">Default</option>
+            <option value="small">Small</option>
+            <option value="tiny">Tiny</option>
+          </select>
+        </p>
+      </div>
     </div>
   </body>
 </html>
