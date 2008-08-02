@@ -3,6 +3,13 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov-gmail-com>
  */
+JSMiner.extend({
+  DEFAULT_ROWS: 8,
+  DEFAULT_COLS: 8,
+  DEFAULT_MINES_CONCENTRATION: 6,  // cells on mine
+  DEFAULT_BLOCK_SIZE: 'normal' // 'small' or 'tiny' 
+});
+
 JSMiner.Options = new Class({
   controller: null,
   
@@ -15,6 +22,13 @@ JSMiner.Options = new Class({
   blockOptionsElement: null,
   levelOptionsElement: null,
   
+  /**
+   * constructor
+   *
+   * @param JSMiner the controller reference
+   * @param Object the user's options reference
+   * @return void
+   */
   initialize: function(controller, options) {
     this.controller = controller;
     
@@ -29,10 +43,17 @@ JSMiner.Options = new Class({
         (element.getElementById(id) || element.getFirst('#'+id));
     }, this);
     
-    if (this.sizeOptionsElement) { this.initSizeOptions(); }
+    if (this.sizeOptionsElement)  { this.initSizeOptions(); }
+    if (this.blockOptionsElement) { this.initBlockOptions(); }
   },
 
 // protected
+
+  /**
+   * initializes the game-size options switch
+   *
+   * @return void
+   */
   initSizeOptions: function() {
     var size = this.controller.getSize(), $this = this;
     this.sizeOptionsElement.value = size[0] +'x'+ size[1];
@@ -45,6 +66,19 @@ JSMiner.Options = new Class({
         var size = this.value.split('x');
         $this.controller.setSize(parseInt(size[0]), parseInt(size[1]));
       }
+    };
+  },
+  
+  /**
+   * initializes the block-size options switch
+   *
+   * @return void
+   */
+  initBlockOptions: function() {
+    var $this = this;
+    this.blockOptionsElement.value = this.controller.getBlockSize();
+    this.blockOptionsElement.onchange = function() {
+      $this.controller.setBlockSize(this.value);
     };
   }
 });

@@ -14,7 +14,11 @@ JSMiner.OptionsTest = TestCase.create({
       
       size: [8, 8],
       setSize: function(w,h) { this.size = [w, h]; },
-      getSize: function() { return this.size }
+      getSize: function() { return this.size },
+      
+      blockSize: 'normal',
+      setBlockSize: function(size) { this.blockSize = size; },
+      getBlockSize: function() { return this.blockSize; }
     };
   },
   
@@ -79,9 +83,12 @@ JSMiner.OptionsTest = TestCase.create({
               '<option value="8x8">8x8</option>'+
               '<option value="16x16">16x16</option>'
     });
-    var options = new JSMiner.Options(this.controller, {
-      sizeOptions: sizes
-    });
+    var options = null;
+    this.assertCalled(this.controller, 'getSize', function() {
+      options = new JSMiner.Options(this.controller, {
+        sizeOptions: sizes
+      });
+    }, this);
     
     this.assertEqual('8x8', sizes.value);
     
@@ -91,5 +98,29 @@ JSMiner.OptionsTest = TestCase.create({
     }, this);
     
     this.assertEqual([16, 16], this.controller.getSize());
+  },
+  
+  testBlockResizer: function() {
+    var sizes = new Element('select', {
+      'html': '<option value="tiny">Tiny</option>'+
+              '<option value="small">Small</option>'+
+              '<option value="normal">Normal</option>'
+    });
+    
+    var options = null;
+    this.assertCalled(this.controller, 'getBlockSize', function() {
+      options = new JSMiner.Options(this.controller, {
+        blockOptions: sizes
+      });
+    }, this);
+    
+    this.assertEqual('normal', sizes.value);
+    
+    this.assertCalled(this.controller, 'setBlockSize', function() {
+      sizes.value = 'small';
+      sizes.onchange();
+    });
+    
+    this.assertEqual('small', this.controller.getBlockSize());
   }
 });

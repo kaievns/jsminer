@@ -3,12 +3,6 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov-gmail-com>
  */
-JSMiner.extend({
-  DEFAULT_ROWS: 8,
-  DEFAULT_COLS: 8,
-  DEFAULT_MINES_CONCENTRATION: 6  // cells on mine 
-});
-
 JSMiner.Game = new Class({
   // the field size 
   rows: null,
