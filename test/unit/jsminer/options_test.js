@@ -169,12 +169,12 @@ JSMiner.OptionsTest = TestCase.create({
     
     this.assertEqual(JSMiner.DEFAULT_BLOCK_SIZE, options.getBlockSize());
     
-    options.setBlockSize('tiny');
-    this.assertEqual('tiny', options.getBlockSize());
+    options.setBlockSize('big');
+    this.assertEqual('big', options.getBlockSize());
     
     // testing unsupported block size
     options.setBlockSize('unsupported strange size');
-    this.assertEqual('tiny', options.getBlockSize());
+    this.assertEqual('big', options.getBlockSize());
     
     // testing initial block-size set
     var options = new JSMiner.Options(this.controller, {

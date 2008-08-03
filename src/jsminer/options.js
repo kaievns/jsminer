@@ -8,7 +8,7 @@ JSMiner.extend({
   DEFAULT_HEIGHT: 8,
   DEFAULT_LEVEL:  'normal',
   DEFAULT_BLOCK_SIZE: 'normal',
-  BLOCK_SIZES: ['tiny', 'small', 'normal'],
+  BLOCK_SIZES: ['big', 'small', 'normal'],
   LEVELS: { // levels cells on mine concentration
     'easy':   9,
     'normal': 6,

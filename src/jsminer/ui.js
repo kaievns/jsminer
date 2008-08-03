@@ -113,6 +113,8 @@ JSMiner.UI = new Class({
    * @return Integer the mined-markers number
    */
   updateField: function(map) {
+    this.updateFieldStyle();
+    
     var markers_num = 0;
     for (var i=0; i < map.length; i++) {
       for (var j=0; j < map[i].length; j++) {
@@ -153,6 +155,24 @@ JSMiner.UI = new Class({
   },
   
   /**
+   * updates the whole field related styles
+   *
+   * @return void
+   */
+  updateFieldStyle: function() {
+    var block_size = this.opts.getBlockSize();
+    this.opts.fieldElement[block_size=='big' ? 'addClass' : 'removeClass']('big-blocks');
+    this.opts.fieldElement[block_size=='small' ? 'addClass' : 'removeClass']('small-blocks');
+    
+    // updating the rows width so the cells were not folding down
+    var row_width = (this.opts.fieldElement.getFirst('div.row'
+      ).getFirst('div.cell').offsetWidth * this.opts.getSize()[0]) + 'px';
+    this.opts.fieldElement.getChildren('div.row').each(function(row) {
+      row.style.width = row_width;
+    });
+  },
+  
+  /**
    * builds up the mines field area
    *
    * @param Element element
@@ -172,11 +192,7 @@ JSMiner.UI = new Class({
     
     element.addClass('jsminer-field');
     
-    // updating the rows width so the cells were not folding down 
-    var row_width = (row.getFirst('div.cell').offsetWidth * map[0].length) + 'px';
-    element.getChildren('div.row').each(function(row) {
-      row.style.width = row_width;
-    });
+    this.updateFieldStyle();
   },
   
   /**

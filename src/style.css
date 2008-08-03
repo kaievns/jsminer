@@ -3,22 +3,22 @@
 }
 
 *.jsminer-field div.row {
-  height: 32px;
-  line-height: 32px;
+  height: 24px;
+  line-height: 24px;
 }
 *.jsminer-field div.row div.cell {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
   float: left;
   background-color: #F8F8F8;
   text-align: center;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   font-family: Verdana;
   color: #808080;
   cursor: default;
-  background-image: url('../img/32/bg_front.png');
+  background-image: url('../img/24/bg_front.png');
 }
 *.jsminer-field div.row div.cell.near-mines-0,
 *.jsminer-field div.row div.cell.near-mines-1,
@@ -29,7 +29,7 @@
 *.jsminer-field div.row div.cell.near-mines-6,
 *.jsminer-field div.row div.cell.near-mines-7,
 *.jsminer-field div.row div.cell.near-mines-8 {
-  background-image: url('../img/32/bg_back.png');
+  background-image: url('../img/24/bg_back.png');
 }
 
 *.jsminer-field div.row div.cell.near-mines-0 { }
@@ -43,18 +43,18 @@
 *.jsminer-field div.row div.cell.near-mines-8 { color: #048; }
 
 *.jsminer-field div.row div.cell.mined {
-  background-image: url('../img/32/mine.png');
+  background-image: url('../img/24/mine.png');
 }
 *.jsminer-field div.row div.cell.boomed {
-  background-image: url('../img/32/boom.png');
+  background-image: url('../img/24/boom.png');
 }
 
 *.jsminer-field div.row div.cell.marked {
-  background-image: url('../img/32/flag.png');
+  background-image: url('../img/24/flag.png');
 }
 
 *.jsminer-field div.row div.cell.marked-wrong {
-  background-image: url('../img/32/flag_wrong.png');
+  background-image: url('../img/24/flag_wrong.png');
 }
 
 /* the status smile styles */
@@ -80,3 +80,76 @@
 *.jsminer-smile.won {
   background-image: url('../img/face-smiley.png');
 }
+
+/* small blocks styles */
+*.jsminer-field.small-blocks div.row {
+  height: 16px;
+  line-height: 16px;
+}
+*.jsminer-field.small-blocks div.row div.cell {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  font-size: 12px;
+  background-image: url('../img/16/bg_front.png');
+}
+*.jsminer-field.small-blocks div.row div.cell.near-mines-0,
+*.jsminer-field.small-blocks div.row div.cell.near-mines-1,
+*.jsminer-field.small-blocks div.row div.cell.near-mines-2,
+*.jsminer-field.small-blocks div.row div.cell.near-mines-3,
+*.jsminer-field.small-blocks div.row div.cell.near-mines-4,
+*.jsminer-field.small-blocks div.row div.cell.near-mines-5,
+*.jsminer-field.small-blocks div.row div.cell.near-mines-6,
+*.jsminer-field.small-blocks div.row div.cell.near-mines-7,
+*.jsminer-field.small-blocks div.row div.cell.near-mines-8 {
+  background-image: url('../img/16/bg_back.png');
+}
+*.jsminer-field.small-blocks div.row div.cell.mined {
+  background-image: url('../img/16/mine.png');
+}
+*.jsminer-field.small-blocks div.row div.cell.boomed {
+  background-image: url('../img/16/boom.png');
+}
+*.jsminer-field.small-blocks div.row div.cell.marked {
+  background-image: url('../img/16/flag.png');
+}
+*.jsminer-field.small-blocks div.row div.cell.marked-wrong {
+  background-image: url('../img/16/flag_wrong.png');
+}
+
+/* big blocks styles */
+*.jsminer-field.big-blocks div.row {
+  height: 32px;
+  line-height: 32px;
+}
+*.jsminer-field.big-blocks div.row div.cell {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 24px;
+  background-image: url('../img/32/bg_front.png');
+}
+*.jsminer-field.big-blocks div.row div.cell.near-mines-0,
+*.jsminer-field.big-blocks div.row div.cell.near-mines-1,
+*.jsminer-field.big-blocks div.row div.cell.near-mines-2,
+*.jsminer-field.big-blocks div.row div.cell.near-mines-3,
+*.jsminer-field.big-blocks div.row div.cell.near-mines-4,
+*.jsminer-field.big-blocks div.row div.cell.near-mines-5,
+*.jsminer-field.big-blocks div.row div.cell.near-mines-6,
+*.jsminer-field.big-blocks div.row div.cell.near-mines-7,
+*.jsminer-field.big-blocks div.row div.cell.near-mines-8 {
+  background-image: url('../img/32/bg_back.png');
+}
+*.jsminer-field.big-blocks div.row div.cell.mined {
+  background-image: url('../img/32/mine.png');
+}
+*.jsminer-field.big-blocks div.row div.cell.boomed {
+  background-image: url('../img/32/boom.png');
+}
+*.jsminer-field.big-blocks div.row div.cell.marked {
+  background-image: url('../img/32/flag.png');
+}
+*.jsminer-field.big-blocks div.row div.cell.marked-wrong {
+  background-image: url('../img/32/flag_wrong.png');
+}
+
