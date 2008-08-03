@@ -94,6 +94,7 @@ var JSMiner = new Class({
    * @return JSMiner self instance
    */
   rebuild: function() {
+    this.game.reset();
     this.ui.build();
     
     return this;
@@ -144,7 +145,8 @@ var JSMiner = new Class({
   won: function() {
     return this.game.won;
   },
-  
+
+// package protected 
   /**
    * covers the game-map access
    *

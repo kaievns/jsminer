@@ -7,7 +7,14 @@ JSMiner.extend({
   DEFAULT_ROWS: 8,
   DEFAULT_COLS: 8,
   DEFAULT_MINES_CONCENTRATION: 6,  // cells on mine
-  DEFAULT_BLOCK_SIZE: 'normal' // 'small' or 'tiny' 
+  DEFAULT_BLOCK_SIZE: 'normal', // 'small' or 'tiny'
+  DEFAULT_LEVEL: 'normal',
+  LEVELS: { // levels cells on mine concentration
+    'easy':   9,
+    'normal': 6,
+    'hard':   4
+  },
+  BLOCK_SIZES: ['tiny', 'small', 'normal']
 });
 
 JSMiner.Options = new Class({
@@ -45,6 +52,7 @@ JSMiner.Options = new Class({
     
     if (this.sizeOptionsElement)  { this.initSizeOptions(); }
     if (this.blockOptionsElement) { this.initBlockOptions(); }
+    if (this.levelOptionsElement) { this.initLevelOptions(); }
   },
 
 // protected
@@ -66,6 +74,10 @@ JSMiner.Options = new Class({
         var size = this.value.split('x');
         $this.controller.setSize(parseInt(size[0]), parseInt(size[1]));
       }
+      
+      // reapplying the value, case controller might change nothing
+      var size = $this.controller.getSize();
+      this.value = size[0] +'x'+ size[1]
     };
   },
   
@@ -79,6 +91,25 @@ JSMiner.Options = new Class({
     this.blockOptionsElement.value = this.controller.getBlockSize();
     this.blockOptionsElement.onchange = function() {
       $this.controller.setBlockSize(this.value);
+      
+      // reapplying the value case the controller may change nothing
+      this.value = $this.controller.getBlockSize();
+    };
+  },
+  
+  /**
+   * inits the severity level options switch element
+   *
+   * @returnv oid
+   */
+  initLevelOptions: function() {
+    var $this = this;
+    this.levelOptionsElement.value = this.controller.getLevel();
+    this.levelOptionsElement.onchange = function() {
+      $this.controller.setLevel(this.value);
+      
+      // reapplying the value case the controller may change nothing
+      this.value = $this.controller.getLevel();
     };
   }
 });

@@ -18,7 +18,11 @@ JSMiner.OptionsTest = TestCase.create({
       
       blockSize: 'normal',
       setBlockSize: function(size) { this.blockSize = size; },
-      getBlockSize: function() { return this.blockSize; }
+      getBlockSize: function() { return this.blockSize; },
+      
+      level: 'normal',
+      setLevel: function(l) { this.level = l; },
+      getLevel: function() { return this.level; }
     };
   },
   
@@ -122,5 +126,35 @@ JSMiner.OptionsTest = TestCase.create({
     });
     
     this.assertEqual('small', this.controller.getBlockSize());
+  },
+  
+  testLevelChanger: function() {
+    var levels = new Element('select', {
+      'html': '<option value="easy">Easy</option>'+
+              '<option value="normal">Normal</option>'+
+              '<option value="hard">Hard</option>'+
+              '<option value="unknown">Unknown</option>'
+    });
+    var options = null;
+    this.assertCalled(this.controller, 'getLevel', function() {
+      options = new JSMiner.Options(this.controller, {
+        levelOptions: levels
+      });
+    }, this);
+    
+    this.assertEqual('normal', levels.value);
+    
+    this.assertCalled(this.controller, 'setLevel', function() {
+      levels.value = 'easy';
+      levels.onchange();
+    }, this);
+    
+    this.assertEqual('easy', this.controller.getLevel());
+    
+    // checking the unsupported level setting up
+    levels.value = 'unknown';
+    levels.onchange();
+    
+    // TODO implement me 
   }
 });
