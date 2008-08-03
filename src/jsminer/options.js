@@ -68,6 +68,13 @@ JSMiner.Options = new Class({
     this.width = (isNaN(width) || width < 1) ? (this.width || JSMiner.DEFAULT_WIDTH) : width;
     this.height = (isNaN(height) || height < 1) ? (this.height || JSMiner.DEFAULT_HEIGHT) : height;
     
+    // string the set in cookies
+    if (this.width != JSMiner.DEFAULT_WIDTH || this.height != JSMiner.DEFAULT_HEIGHT) {
+      Cookie.write('jsminer_size', this.width+'x'+this.height);
+    } else {
+      Cookie.dispose('jsminer_size');
+    }
+    
     this.controller.game.setSize(this.width, this.height);
   },
   
@@ -88,6 +95,13 @@ JSMiner.Options = new Class({
    */
   setLevel: function(level) {
     this.level = JSMiner.LEVELS[level] ? level : (this.level || JSMiner.DEFAULT_LEVEL);
+    
+    // saving the set in cookies
+    if (this.level != JSMiner.DEFAULT_LEVEL) {
+      Cookie.write('jsminer_level', this.level);
+    } else {
+      Cookie.dispose('jsminer_level');
+    }
     
     this.controller.game.setLevel(JSMiner.LEVELS[this.level]);
   },
@@ -110,6 +124,13 @@ JSMiner.Options = new Class({
   setBlockSize: function(size) {
     this.blockSize = JSMiner.BLOCK_SIZES.contains(size) ? size :
       (this.blockSize || JSMiner.DEFAULT_BLOCK_SIZE);
+      
+    // saving the set in cookies
+    if (this.blockSize != JSMiner.DEFAULT_BLOCK_SIZE) {
+      Cookie.write('jsminer_block_size', this.blockSize);
+    } else {
+      Cookie.dispose('jsminer_block_size');
+    }
   },
   
   /**
@@ -147,9 +168,30 @@ JSMiner.Options = new Class({
    * @return void
    */
   setDefaults: function(options) {
-    this.setSize(options['width'], options['height']);
-    this.setBlockSize(options['blockSize']);
-    this.setLevel(options['level']);
+    // trying cookie recovery
+    var size = Cookie.read('jsminer_size');
+    size = size ? size.split('x') : [];
+    if (size.length == 2) {
+      this.setSize(size[0], size[1]);
+    } else {
+      this.setSize(options['width'], options['height']);
+    }
+    
+    // trying to restore the block-size set
+    var block_size = Cookie.read('jsminer_block_size');
+    if (block_size && JSMiner.BLOCK_SIZES.contains(block_size)) {
+      this.setBlockSize(block_size);
+    } else {
+      this.setBlockSize(options['blockSize']);
+    }
+    
+    // trying to restore the hardness level
+    var level = Cookie.read('jsminer_level');
+    if (level && JSMiner.LEVELS[level]) {
+      this.setLevel(level);
+    } else {
+      this.setLevel(options['level']);
+    }
   },
   
   /**

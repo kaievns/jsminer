@@ -6,6 +6,18 @@
 JSMiner.OptionsTest = TestCase.create({
   name: 'JSMiner.OptionsTest',
   
+  beforeAll: function() {
+    this.mock(Cookie, 'read', function() { return null; });
+    this.mock(Cookie, 'write', function() {});
+    this.mock(Cookie, 'dispose', function() {});
+  },
+  
+  afterAll: function() {
+    this.undoMock(Cookie, 'read');
+    this.undoMock(Cookie, 'write');
+    this.undoMock(Cookie, 'dispose');
+  },
+  
   setup: function() {
     this.controller = {
       element: new Element('div'),
