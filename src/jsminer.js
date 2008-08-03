@@ -206,7 +206,7 @@ var JSMiner = new Class({
    */
   hitCell: function(cell) {
     this.game.hitCell(cell);
-    this.ui.update();
+    this.ui.update(cell);
   },
   
   /**
@@ -217,6 +217,6 @@ var JSMiner = new Class({
    */
   markCell: function(cell) {
     this.game.markCell(cell);
-    this.ui.update();
+    this.ui.update(cell);
   }
 });

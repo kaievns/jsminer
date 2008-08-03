@@ -43,9 +43,10 @@ JSMiner.UI = new Class({
   /**
    * updates the elements states
    *
+   * @params JSMiner.Cell last hit cell
    * @return void
    */
-  update: function() {
+  update: function(last_cell) {
     if (this.opts.fieldElement) {
       var markers_num = this.updateField(this.controller.getMinesMap());
       if (this.opts.scoreElement) {
@@ -57,6 +58,13 @@ JSMiner.UI = new Class({
     }
     if (this.opts.smileElement) {
       this.updateSmile();
+    }
+    if (this.controller.game.over) {
+      if (!this.finalSalutPlayed) {
+        this.showFinalSalut(last_cell);
+      }
+    } else {
+      this.finalSalutPlayed = false;
     }
   },
   
@@ -228,5 +236,58 @@ JSMiner.UI = new Class({
     } else {
       this.controller.hitCell(cell);
     }
+  },
+  
+  /**
+   * this initiates a final show-off some visual effects
+   * say the game is over
+   *
+   * @param JSMiner.Cell last hit cell
+   * @return void
+   */
+  showFinalSalut: function(last_cell) {
+    var show_class = this.controller.failed() ? 'boomed' : 'marked';
+    var map = this.controller.getMinesMap();
+    
+    // the effect parameters
+    var effect_duration = 400;
+    var effect_width = 1.2;
+    
+    // calculating the distance which the effect should pass
+    var x_distance = last_cell.left > map[0].length/2 ? last_cell.left+1 : Math.round(map[0].length/2);
+    var y_distance = last_cell.top > map.length/2 ? last_cell.top+1 : Math.round(map.length/2);
+    var distance = x_distance > y_distance ? x_distance : y_distance;
+    
+    // calculating the times
+    var step_timeout = effect_duration / distance;
+    var step_duration = step_timeout * effect_width;
+    
+    for (var i=0; i < map.length; i++) {
+      for (var j=0; j < map[i].length; j++) {
+        // calculating the effect timeout
+        var x_diff = Math.abs(map[i][j].left - last_cell.left);
+        var y_diff = Math.abs(map[i][j].top - last_cell.top);
+        var diff = x_diff > y_diff ? x_diff : y_diff;
+        var timeout = diff * step_timeout;
+        
+        // setting up the cells class-switch timeouts
+        (function(cell, timeout) { // <- clear the scope
+          cell._oldClassName = cell.element.className;
+          cell._formerHTML = cell.element.innerHTML;
+          
+          window.setTimeout(function() {
+            cell.element.innerHTML = ' ';
+            cell.element.className = 'cell '+show_class;
+          }, timeout);
+          window.setTimeout(function() {
+            cell.element.innerHTML = cell._formerHTML;
+            cell.element.className = cell._oldClassName;
+          }, timeout + step_duration);
+          
+        }).apply(this, [map[i][j], timeout]);
+      }
+    }
+    
+    this.finalSalutPlayed = true;
   }
 });
