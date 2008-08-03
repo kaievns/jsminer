@@ -5,12 +5,13 @@
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov-gmail-com>
  */
 *.jsminer-field {
-  
+  text-align: center;
 }
 
 *.jsminer-field div.row {
   height: 24px;
   line-height: 24px;
+  margin: 0 auto;
 }
 *.jsminer-field div.row div.cell {
   width: 24px;
