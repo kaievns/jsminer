@@ -10,6 +10,7 @@ JSMiner.UITest = TestCase.create({
     this.fakeController = {
       opts: {
         fieldElement: new Element('div'),
+        getSize: function() { return [2,2]; },
         getBlockSize: function() { return 'normal'; }
       },
       minesMap: [
