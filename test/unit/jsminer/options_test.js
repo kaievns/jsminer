@@ -22,7 +22,12 @@ JSMiner.OptionsTest = TestCase.create({
       
       level: 'normal',
       setLevel: function(l) { this.level = l; },
-      getLevel: function() { return this.level; }
+      getLevel: function() { return this.level; },
+      
+      game: {
+        setSize: function() {},
+        setLevel: function() {}
+      }
     };
   },
   
@@ -87,21 +92,16 @@ JSMiner.OptionsTest = TestCase.create({
               '<option value="8x8">8x8</option>'+
               '<option value="16x16">16x16</option>'
     });
-    var options = null;
-    this.assertCalled(this.controller, 'getSize', function() {
-      options = new JSMiner.Options(this.controller, {
-        sizeOptions: sizes
-      });
-    }, this);
+    var options = new JSMiner.Options(this.controller, {sizeOptions: sizes});
     
     this.assertEqual('8x8', sizes.value);
     
-    this.assertCalled([[this.controller, 'active'], [this.controller, 'setSize']], function() {
+    this.assertCalled(this.controller, 'setSize', function() {
       sizes.value = '16x16';
       sizes.onchange();
     }, this);
     
-    this.assertEqual([16, 16], this.controller.getSize());
+    this.assertEqual(['16', '16'], this.controller.getSize());
   },
   
   testBlockResizer: function() {
@@ -111,12 +111,7 @@ JSMiner.OptionsTest = TestCase.create({
               '<option value="normal">Normal</option>'
     });
     
-    var options = null;
-    this.assertCalled(this.controller, 'getBlockSize', function() {
-      options = new JSMiner.Options(this.controller, {
-        blockOptions: sizes
-      });
-    }, this);
+    var options = new JSMiner.Options(this.controller, {blockOptions: sizes});
     
     this.assertEqual('normal', sizes.value);
     
@@ -135,12 +130,7 @@ JSMiner.OptionsTest = TestCase.create({
               '<option value="hard">Hard</option>'+
               '<option value="unknown">Unknown</option>'
     });
-    var options = null;
-    this.assertCalled(this.controller, 'getLevel', function() {
-      options = new JSMiner.Options(this.controller, {
-        levelOptions: levels
-      });
-    }, this);
+    var options = new JSMiner.Options(this.controller, {levelOptions: levels});
     
     this.assertEqual('normal', levels.value);
     
@@ -150,11 +140,68 @@ JSMiner.OptionsTest = TestCase.create({
     }, this);
     
     this.assertEqual('easy', this.controller.getLevel());
+  },
+  
+  testSetSize: function() {
+    var options = new JSMiner.Options(this.controller);
     
-    // checking the unsupported level setting up
-    levels.value = 'unknown';
-    levels.onchange();
+    this.assertEqual([JSMiner.DEFAULT_WIDTH, JSMiner.DEFAULT_HEIGHT], options.getSize());
     
-    // TODO implement me 
+    this.assertCalled(this.controller.game, 'setSize', function() {
+      options.setSize(12, '14');
+    });
+    
+    this.assertEqual([12, 14], options.getSize());
+    
+    // testing wrong size set
+    options.setSize('notanum', -123);
+    this.assertEqual([12, 14], options.getSize());
+    
+    // testing initial size set
+    var options = new JSMiner.Options(this.controller, {
+      width: 16, height: 4
+    });
+    this.assertEqual([16, 4], options.getSize());
+  },
+  
+  testSetBlockSize: function() {
+    var options = new JSMiner.Options(this.controller);
+    
+    this.assertEqual(JSMiner.DEFAULT_BLOCK_SIZE, options.getBlockSize());
+    
+    options.setBlockSize('tiny');
+    this.assertEqual('tiny', options.getBlockSize());
+    
+    // testing unsupported block size
+    options.setBlockSize('unsupported strange size');
+    this.assertEqual('tiny', options.getBlockSize());
+    
+    // testing initial block-size set
+    var options = new JSMiner.Options(this.controller, {
+      blockSize: 'small'
+    });
+    this.assertEqual('small', options.getBlockSize());
+  },
+  
+  testSetLevel: function() {
+    var options = new JSMiner.Options(this.controller);
+    
+    this.assertEqual(JSMiner.DEFAULT_LEVEL, options.getLevel());
+    
+    this.assertCalled(this.controller.game, 'setLevel', function() {
+      options.setLevel('hard');
+    });
+    
+    this.assertEqual('hard', options.getLevel());
+    
+    // testing unsupported level set
+    options.setLevel('unsupported level');
+    this.assertEqual('hard', options.getLevel());
+    
+    // testing initial level set
+    var options = new JSMiner.Options(this.controller, {
+      'level': 'easy'
+    });
+    this.assertEqual('easy', options.getLevel());
   }
 });

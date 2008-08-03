@@ -8,7 +8,9 @@ JSMiner.UITest = TestCase.create({
   
   beforeAll: function() {
     this.fakeController = {
-      field: new Element('div'),
+      opts: {
+        fieldElement: new Element('div')
+      },
       minesMap: [
         [new JSMiner.Cell(0,0),new JSMiner.Cell(0,1)],
         [new JSMiner.Cell(1,0),new JSMiner.Cell(1,1)]
@@ -34,7 +36,7 @@ JSMiner.UITest = TestCase.create({
       this.ui.build();
     }, this);
     
-    var field = this.fakeController.field;
+    var field = this.fakeController.opts.fieldElement;
     this.assertHasChild(field, "div.row");
     this.assertHasChild(field, "div.row > div.cell");
     

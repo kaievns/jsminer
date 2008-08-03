@@ -9,20 +9,20 @@ JSMiner.GameTest = TestCase.create({
   testInstance: function() {
     var game = new JSMiner.Game();
     
-    this.assertEqual(JSMiner.DEFAULT_ROWS, game.rows);
-    this.assertEqual(JSMiner.DEFAULT_COLS, game.cols);
-    this.assertEqual(JSMiner.DEFAULT_MINES_CONCENTRATION, game.minesConcentration);
+    this.assertEqual(JSMiner.DEFAULT_HEIGHT, game.height);
+    this.assertEqual(JSMiner.DEFAULT_WIDTH, game.width);
+    this.assertEqual(JSMiner.LEVELS[JSMiner.DEFAULT_LEVEL], game.level);
     
     this.assertEqual(
-      Math.floor(JSMiner.DEFAULT_ROWS*JSMiner.DEFAULT_COLS/JSMiner.DEFAULT_MINES_CONCENTRATION),
+      Math.floor(game.height * game.width / game.level),
       game.mines
     );
     
     this.assertEqual(0, game.timer);
     
     this.assertInstanceOf(Array, game.map);
-    this.assert(game.rows, game.map.length);
-    this.assert(game.cols, game.map[0].length);
+    this.assert(game.height, game.map.length);
+    this.assert(game.width, game.map[0].length);
     this.assertInstanceOf(JSMiner.Cell, game.map[0][0]);        
   },
   
@@ -62,8 +62,8 @@ JSMiner.GameTest = TestCase.create({
     
     var mines_count = 0;
     var near_mines_count = 0;
-    for (var i=0; i < game.rows; i++) {
-      for (var j=0; j < game.cols; j++) {
+    for (var i=0; i < game.height; i++) {
+      for (var j=0; j < game.width; j++) {
         if (game.map[i][j].mined) {
           mines_count ++;
         } else {

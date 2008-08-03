@@ -6,63 +6,23 @@
 var JSMinerTest = TestCase.create({
   name: "JSMinerTest",
   
-  testClassExistance: function() {
-    this.assert(typeof(JSMiner) != 'undefined');
-    this.assertInstanceOf(Function, JSMiner);
-  },
-  
   testInstance: function() {
     var element = new Element('div');
     
-    var game = new JSMiner(element);
-    this.assertSame(element, game.element);
-    this.assertNull(game.field);
-    this.assertNull(game.score);
-    this.assertNull(game.timer);
-    this.assertNull(game.smile);
-    
-    var field = new Element('div', {id: 'field'});
-    var timer = new Element('div', {id: 'timer'});
-    var score = new Element('div', {id: 'score'});
-    var smile = new Element('div', {id: 'smile'});
-    
-    var game = new JSMiner(element, {
-      'field': field,
-      'timer': timer,
-      'score': score,
-      'smile': smile
-    });
-    
-    this.assertSame(element, game.element);
-    this.assertSame(field, game.field);
-    this.assertSame(timer, game.timer);
-    this.assertSame(score, game.score);
-    this.assertSame(smile, game.smile);
-    
-    element.appendChild(field);
-    element.appendChild(timer);
-    element.appendChild(score);
-    element.appendChild(smile);
-    
-    var game = new JSMiner(element);
-    this.assertSame(element, game.element);
-    this.assertSame(field, game.field);
-    this.assertSame(timer, game.timer);
-    this.assertSame(score, game.score);
-    this.assertSame(smile, game.smile); 
+    var miner = new JSMiner(element); /*
+    this.assertSame(element, miner.element);
+    this.assertNotNull(miner.options);
+    this.assertNotNull(miner.game);
+    this.assertNotNull(miner.ui);
   },
   
   testSize: function() {
-    var miner = new JSMiner(new Element('div'));
+    var miner = new JSMiner();
     
-    this.assertEqual(JSMiner.DEFAULT_ROWS, miner.game.rows);
-    this.assertEqual(JSMiner.DEFAULT_COLS, miner.game.cols);
-    
-    var miner = new JSMiner(new Element('div'), {
-      rows: 12, cols: 22
+    this.assertCalled(miner.options, 'setSize', function() {
+      miner.setSize(16, 8);
     });
     
-    this.assertEqual(12, miner.game.rows);
-    this.assertEqual(22, miner.game.cols);
+    this.assertEqual([16, 8], miner.getSize()); */
   }
 });

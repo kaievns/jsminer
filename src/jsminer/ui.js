@@ -5,6 +5,7 @@
  */
 JSMiner.UI = new Class({
   controller: null,
+  opts: null,
   
   /**
    * constructor
@@ -14,6 +15,7 @@ JSMiner.UI = new Class({
    */
   initialize: function(controller) {
     this.controller = controller;
+    this.opts = controller.opts;
   },
   
   /**
@@ -22,18 +24,18 @@ JSMiner.UI = new Class({
    * @return void
    */
   build: function() {
-    if (this.controller.field) {
-      this.buildField(this.controller.field, this.controller.getMinesMap());
+    if (this.opts.fieldElement) {
+      this.buildField(this.opts.fieldElement, this.controller.getMinesMap());
     }
-    if (this.controller.score) {
+    if (this.opts.scoreElement) {
       this.updateScore(0);
     }
-    if (this.controller.timer) {
+    if (this.opts.timerElement) {
       this.controller.game.updateTimerCallback = this.updateTimer.bind(this);
       this.updateTimer(0);
     }
-    if (this.controller.smile) {
-      this.controller.smile.onclick = this.controller.reset.bind(this.controller);
+    if (this.opts.smileElement) {
+      this.opts.smileElement.onclick = this.controller.reset.bind(this.controller);
       this.updateSmile();
     }
   },
@@ -44,16 +46,16 @@ JSMiner.UI = new Class({
    * @return void
    */
   update: function() {
-    if (this.controller.field) {
+    if (this.opts.fieldElement) {
       var markers_num = this.updateField(this.controller.getMinesMap());
-      if (this.controller.score) {
+      if (this.opts.scoreElement) {
         this.updateScore(markers_num);
       }
     }
-    if (this.controller.timer) {
+    if (this.opts.timerElement) {
       this.updateTimer(this.controller.game.timer);
     }
-    if (this.controller.smile) {
+    if (this.opts.smileElement) {
       this.updateSmile();
     }
   },
@@ -74,7 +76,7 @@ JSMiner.UI = new Class({
     } else if (this.controller.won()) {
       class_name = 'won';
     }
-    this.controller.smile.className = 'jsminer-smile '+class_name;
+    this.opts.smileElement.className = 'jsminer-smile '+class_name;
   },
   
   /**
@@ -86,7 +88,7 @@ JSMiner.UI = new Class({
     var hours = Math.floor(time/3600);
     var minutes = Math.floor(time/60%60);
     var seconds = time % 60;
-    this.controller.timer.innerHTML = '' +
+    this.opts.timerElement.innerHTML = '' +
       (hours < 10 ? '0':'')   + hours + ':' +
       (minutes < 10 ? '0':'') + minutes  + ':' +
       (seconds < 10 ? '0':'') + seconds ;
@@ -99,7 +101,7 @@ JSMiner.UI = new Class({
    * @return void
    */
   updateScore: function(markers_num) {
-    this.controller.score.innerHTML = ''+
+    this.opts.scoreElement.innerHTML = ''+
       markers_num + '/' +
       this.controller.getMinesNum();
   },

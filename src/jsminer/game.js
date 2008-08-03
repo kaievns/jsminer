@@ -5,11 +5,11 @@
  */
 JSMiner.Game = new Class({
   // the field size 
-  rows: null,
-  cols: null,
+  height: null,
+  width: null,
   
   // how much cells on a mine 
-  minesConcentration: null,
+  level: null,
   
   // the game state attributes 
   mines: null,
@@ -27,22 +27,35 @@ JSMiner.Game = new Class({
   won: null,
   
   initialize: function() {
-    this.minesConcentration = JSMiner.DEFAULT_MINES_CONCENTRATION;
-    this.setSize(JSMiner.DEFAULT_ROWS, JSMiner.DEFAULT_COLS);
+    this.level = JSMiner.LEVELS[JSMiner.DEFAULT_LEVEL];
+    this.setSize(JSMiner.DEFAULT_WIDTH, JSMiner.DEFAULT_HEIGHT);
   },
   
   /**
    * sets the field size
    *
-   * @param Integer rows num
-   * @param Integer cols num
+   * @param Integer width cells num
+   * @param Integer height cells num
    * @return void
    */
-  setSize: function(rows, cols) {
-    this.rows = typeof(rows) == 'number' && rows >= 1 ? rows : this.rows || JSMiner.DEFAULT_ROWS;
-    this.cols = typeof(cols) == 'number' && cols >= 1 ? cols : this.cols || JSMiner.DEFAULT_COLS;
-    
-    this.map = null;
+  setSize: function(width, height) {
+    if (this.width != width || this.height != height) {
+      this.height = height;
+      this.width = width;
+      
+      this.map = null;
+    }
+    this.reset();
+  },
+  
+  /**
+   * sets the cells/mines concentration as a number of cells for a single mine
+   *
+   * @param Integer concentration level
+   * @return void
+   */
+  setLevel: function(level) {
+    this.level = level;
     this.reset();
   },
   
@@ -52,7 +65,7 @@ JSMiner.Game = new Class({
    * @return void
    */
   reset: function() {
-    this.mines = Math.floor(this.rows * this.cols / this.minesConcentration);
+    this.mines = Math.floor(this.height * this.width / this.level);
     this.timer = 0;
     this.paused = null;
     this.filledUp = false;
@@ -76,8 +89,8 @@ JSMiner.Game = new Class({
    * @return void
    */
   run: function(top, left) {
-    var top = arguments.length < 2 ? $random(0, this.rows) : top;
-    var left = arguments.length < 2 ? $random(0, this.cols) : left;
+    var top = arguments.length < 2 ? $random(0, this.height) : top;
+    var left = arguments.length < 2 ? $random(0, this.width) : left;
     
     this.fillMap(top, left);
     
@@ -92,6 +105,24 @@ JSMiner.Game = new Class({
    */
   pause: function() {
     this.paused = !this.paused;
+  },
+  
+  /**
+   * checks if the game is active
+   *
+   * @return boolean check result
+   */
+  isActive: function() {
+    return !this.paused && !this.over && this.filledUp;
+  },
+  
+  /**
+   * checks if the game is failed
+   *
+   * @return boolean check result
+   */
+  isFailed: function() {
+    return this.over && !this.won;
   },
   
   /**
@@ -181,8 +212,8 @@ JSMiner.Game = new Class({
     
     var start_x = top > 0 ? top-1 : 0;
     var start_y = left > 0 ? left-1 : 0;
-    var end_x = top < this.rows-1 ? top+2 : this.rows;
-    var end_y = left < this.cols-1 ? left+2 : this.cols;
+    var end_x = top < this.height-1 ? top+2 : this.height;
+    var end_y = left < this.width-1 ? left+2 : this.width;
     
     for (var x=start_x; x < end_x; x++) {
       for (var y=start_y; y < end_y; y++) {
@@ -199,8 +230,8 @@ JSMiner.Game = new Class({
    * @return void
    */
   resetMap: function() {
-    for (var i=0; i < this.rows; i++) {
-      for (var j=0; j < this.cols; j++) {
+    for (var i=0; i < this.height; i++) {
+      for (var j=0; j < this.width; j++) {
         this.map[i][j].reset();
       }
     }
@@ -213,9 +244,9 @@ JSMiner.Game = new Class({
    */
   buildMap: function() {
     this.map = [];
-    for (var i=0; i < this.rows; i++) {
+    for (var i=0; i < this.height; i++) {
       this.map[i] = [];
-      for (var j=0; j < this.cols; j++) {
+      for (var j=0; j < this.width; j++) {
         this.map[i][j] = new JSMiner.Cell(i, j);
       }
     }
@@ -238,8 +269,8 @@ JSMiner.Game = new Class({
     
     // collecting aviable minning places
     var aviable_cells = [];
-    for (var i=0; i < this.rows; i++) {
-      for (var j=0; j < this.cols; j++) {
+    for (var i=0; i < this.height; i++) {
+      for (var j=0; j < this.width; j++) {
         if (!exclude.contains(i+"-"+j)) {
           aviable_cells.push([i, j]);
         }
@@ -347,8 +378,8 @@ JSMiner.Game = new Class({
    * @return void
    */
   calculateNearMinesNums: function() {
-    for (var i=0; i < this.rows; i++) {
-      for (var j=0; j < this.cols; j++) {
+    for (var i=0; i < this.height; i++) {
+      for (var j=0; j < this.width; j++) {
         if (!this.map[i][j].mined) {
           this.map[i][j].nearMinesNum = 0;
           

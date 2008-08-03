@@ -7,16 +7,9 @@ var JSMiner = new Class({
   // the basic element attribute
   element: null,
   
-  // main elements attributes
-  field: null,
-  timer: null,
-  score: null,
-  smile: null,
-  
-  // the game-logic object 
+  // internal game modules
+  opts: null, 
   game: null,
-  
-  // the user-interface builder object
   ui: null,
   
   /**
@@ -28,41 +21,31 @@ var JSMiner = new Class({
    * @return void
    */
   initialize: function(element, options) {
-    var options = options || {};
-    
     this.element = $(element);
     
-    if (!this.element) { throw "Element is not found"; }
-    
-    // checking the basic elements location 
-    ['field', 'timer', 'score', 'smile'].each(function(name) {
-      if (options[name]) {
-        this[name] = $(options[name]);
-      } else {
-        var child =  this.element.getElementById(name) || this.element.getFirst("#"+name);
-        if (child) {
-          this[name] = child;
-        }
-      }
-    }, this);
-    
-    this.options = new JSMiner.Options(this, options);
-    this.game = new JSMiner.Game();
+    this.game = new JSMiner.Game();    
+    this.opts = new JSMiner.Options(this, options);
     this.ui = new JSMiner.UI(this);
     
-    this.setSize(options['rows'], options['cols']);
+    this.rebuild();
   },
   
   /**
    * sets the field size
    *
-   * @param Integer rows number
-   * @param Integer cols number
+   * @param Integer width (cells)
+   * @param Integer height (cells)
    * @return JSMiner self instance
    */
-  setSize: function(rows, cols) {
-    this.game.setSize(rows, cols)
-    this.rebuild();
+  setSize: function(width, height) {
+    var allowed = true;
+    if (this.game.isActive()) {
+      var allowed = window.confirm("This will reset the current game\nProcess?");
+    }
+    if (allowed) {
+      this.opts.setSize(width, height)
+      this.rebuild();
+    }
     
     return this;
   },
@@ -73,7 +56,57 @@ var JSMiner = new Class({
    * @return array [rows, cols]
    */
   getSize: function() {
-    return [this.game.rows, this.game.cols];
+    return this.opts.getSize();
+  },
+  
+  /**
+   * applies the given block size to the field
+   *
+   * @param String block-size name, see JSMiner.BLOCK_SIZES for aviable options
+   * @return JSMiner self instance
+   */
+  setBlockSize: function(size) {
+    this.opts.setBlockSize(size);
+    this.ui.update();
+    
+    return this;
+  },
+  
+  /**
+   * returns the current block size name
+   *
+   * @return String block-size name
+   */
+  getBlockSize: function() {
+    return this.opts.getBlockSize();
+  },
+  
+  /**
+   * sets the hardness level of the game
+   *
+   * @param String level name, see JSMiner.LEVELS object keys for aviable options
+   * @return JSMiner self instance
+   */
+  setLevel: function(level) {
+    var allowed = true;
+    if (this.game.isActive()) {
+      var allowed = window.confirm("This will reset the curren game\nProcess?");
+    }
+    if (allowed) {
+      this.opts.setLevel(level);
+      this.reset();
+    }
+    
+    return this;
+  },
+  
+  /**
+   * returns the current hardness level name
+   *
+   * @return String level-name
+   */
+  getLevel: function() {
+    return this.opts.getLevel();
   },
   
   /**
@@ -125,7 +158,7 @@ var JSMiner = new Class({
    * @return boolean check result
    */
   active: function() {
-    return !this.game.paused && !this.game.over && this.game.filledUp;
+    return this.game.isActive();
   },
   
   /**
@@ -134,7 +167,7 @@ var JSMiner = new Class({
    * @return boolean check result
    */
   failed: function() {
-    return this.game.over && !this.game.won;
+    return this.game.isFailed();
   },
   
   /**
