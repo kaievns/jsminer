@@ -2,3 +2,14 @@ JSMiner
 =======
 
 JSMiner is the well known mines game implemented with pure javascript+css+html
+
+NOTE: icons and graphics in the project, merely taken from the Gnome project,
+      so, be ware it's under GPL.
+
+Usage
+=====
+For a simpliest example of usage take a look at the test/demo.html file.
+
+
+Copyright (c) 2008 [Nikolay V. Nemshilov aka St.],
+ released under the MIT license
