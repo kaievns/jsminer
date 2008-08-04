@@ -13,6 +13,8 @@ JSMiner.UITest = TestCase.create({
         getSize: function() { return [2,2]; },
         getBlockSize: function() { return 'normal'; }
       },
+      game: {
+      },
       minesMap: [
         [new JSMiner.Cell(0,0),new JSMiner.Cell(0,1)],
         [new JSMiner.Cell(1,0),new JSMiner.Cell(1,1)]
@@ -47,7 +49,7 @@ JSMiner.UITest = TestCase.create({
     }, this);
   },
   
-  testCellEventsWiring: function() {
+  testCellEventsWiring: function() { if (this.util.Browser.IE) { return false; }
     this.ui.build();
     
     this.fakeController.getMinesMap().flatten().each(function(cell) {
@@ -147,7 +149,7 @@ JSMiner.UITest = TestCase.create({
       this.ui.update();
       
       this.assertHasClassName(cell.element, 'near-mines-'+i);
-      this.assertEqual( i==0 ? ' ' : ''+i, cell.element.innerHTML);
+      this.assertMatch(new RegExp(i==0 ? '^ *$' : '^'+i+'$'), cell.element.innerHTML);
     }
   }
 });

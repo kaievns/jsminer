@@ -214,7 +214,7 @@ JSMiner.UI = new Class({
       'class': 'cell',
       'events': {
         'click':       this.handleCellClick.bindWithEvent(this,[cell]),
-        'contextmenu': this.handleCellClick.bindWithEvent(this,[cell])
+        'contextmenu': this.handleCellContextClick.bindWithEvent(this,[cell])
       }
     });
         
@@ -230,12 +230,20 @@ JSMiner.UI = new Class({
    */
   handleCellClick: function(event, cell) {
     event.stop();
-    var button = event.event['which'] ? event.event.which : event.event.button;
+    var button = event.event['which'] ? event.event.which : 1;
     if (event.shift || event.control || event.meta || button != 1) {
       this.controller.markCell(cell);
     } else {
       this.controller.hitCell(cell);
     }
+  },
+  
+  // IE contextmenu catchup
+  handleCellContextClick: function(event, cell) {
+    if (navigator.userAgent.indexOf("MSIE") != -1) {
+      event.event['which'] = 3;
+    }
+    this.handleCellClick(event, cell);
   },
   
   /**

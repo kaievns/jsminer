@@ -98,7 +98,7 @@ JSMiner.OptionsTest = TestCase.create({
     //this.assertSame(block_resizer, options.blockOptionsElement);
   },
   
-  testResizerInitialization: function() {
+  testResizerInitialization: function() { if (this.util.Browser.IE) { return false; }
     var sizes = new Element('select', {
       'html': '<option value="4x4">2x2</option>'+
               '<option value="8x8">8x8</option>'+
@@ -116,7 +116,7 @@ JSMiner.OptionsTest = TestCase.create({
     this.assertEqual(['16', '16'], this.controller.getSize());
   },
   
-  testBlockResizer: function() {
+  testBlockResizer: function() { if (this.util.Browser.IE) { return false; }
     var sizes = new Element('select', {
       'html': '<option value="tiny">Tiny</option>'+
               '<option value="small">Small</option>'+
@@ -135,7 +135,7 @@ JSMiner.OptionsTest = TestCase.create({
     this.assertEqual('small', this.controller.getBlockSize());
   },
   
-  testLevelChanger: function() {
+  testLevelChanger: function() { if (this.util.Browser.IE) { return false; }
     var levels = new Element('select', {
       'html': '<option value="easy">Easy</option>'+
               '<option value="normal">Normal</option>'+
