@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>JSMiner - Demo</title>
+    <link rel="StyleSheet" type="text/css" href="../build/stylesheets/jsminer.css"/>
+    <link rel="StyleSheet" type="text/css" href="../build/stylesheets/demo.css"/>
+    <script type="text/javascript" src="../build/javascripts/mootools.js"></script>
+    <script type="text/javascript" src="../build/javascripts/jsminer.js"></script>
+    <script type="text/javascript">
+      window.onload = function() {
+        var game = new JSMiner('game');
+      }
+    </script>
+  </head>
+  <body>
+    <h2>Simple Build Demo</h2>
+    <div id="game">
+      <div id="status">
+        <div id="time">Time <span id="timer">00:00:00</span></div>
+        <div id="smile"></div>
+        <div id="flags">Mines <span id="score">0/0</span></div>
+      </div>
+      
+      <div id="field"></div>
+      
+      <div id="options">
+        <p>
+          <label>Size</label>
+          <select id="size-options">
+            <option value="8x8">Small</option>
+            <option value="16x8">Average</option>
+            <option value="16x16">Normal</option>
+            <option value="24x16">Big</option>
+            <option value="32x16">King Size</option>
+          </select>
+        </p>
+        <p>
+          <label>Level</label>
+          <select id="level-options">
+            <option value="easy">Easy</option>
+            <option value="normal">Normal</option>
+            <option value="hard">You're dead</option>
+          </select>
+        </p>
+        <p>
+          <label>Block Size</label>
+          <select id="block-options">
+            <option value="big">Big</option>
+            <option value="normal">Normal</option>
+            <option value="small">Small</option>
+          </select>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

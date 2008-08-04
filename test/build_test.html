@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>JSMiner - Test</title>
+    <script type="text/javascript" src="../lib/testcase.js"></script>
+    <script type="text/javascript" src="../lib/mootools.js"></script>
+    
+    <script type="text/javascript" src="../build/javascripts/jsminer.js"></script>
+    
+    <script type="text/javascript" src="unit/jsminer_test.js"></script>
+    <script type="text/javascript" src="unit/jsminer/options_test.js"></script>
+    <script type="text/javascript" src="unit/jsminer/game_test.js"></script>
+    <script type="text/javascript" src="unit/jsminer/cell_test.js"></script>
+    <script type="text/javascript" src="unit/jsminer/ui_test.js"></script>
+    
+    <script type="text/javascript">
+      new TestSuite(
+        JSMinerTest,
+        JSMiner.OptionsTest,
+        JSMiner.GameTest,
+        JSMiner.CellTest,
+        JSMiner.UITest
+      ).runOnLoad();
+    </script>
+  </head>
+  <body>
+    There are the build test. Run the 'rake build' task before open the file
+  </body>
+</html>

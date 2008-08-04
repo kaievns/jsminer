@@ -43,7 +43,7 @@ var JSMiner = new Class({
       var allowed = window.confirm("This will reset the current game\nProcess?");
     }
     if (allowed) {
-      this.opts.setSize(width, height)
+      this.opts.setSize(width, height);
       this.rebuild();
     }
     
